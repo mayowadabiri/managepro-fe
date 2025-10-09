@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+
+.dark-mode {
+  background-color: #111827;
+  color: #f9fafb;
+}
+/* Auth page styles - These are no longer needed since we're using the new AuthLayout */
+/* .auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e6eeff 100%);
+  padding: 1.5rem;
+}
+.auth-container {
+  max-width: 28rem;
+  width: 100%;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(229, 231, 235, 1);
+} */
