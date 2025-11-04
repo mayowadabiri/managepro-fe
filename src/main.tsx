@@ -5,6 +5,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen';
 import { Providers } from "./Providers";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const router = createRouter({

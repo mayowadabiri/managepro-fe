@@ -4,7 +4,12 @@ import { Link } from "@tanstack/react-router";
 import { formatDate } from "date-fns";
 import { ArrowUpRightIcon, CalendarIcon, PlusIcon } from "lucide-react";
 
-export const ExpiringSoon = () => {
+
+interface ExpiringSoonProps {
+    renewals: any[];
+}
+
+export const ExpiringSoon = ({ renewals }: ExpiringSoonProps) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
@@ -40,9 +45,9 @@ export const ExpiringSoon = () => {
                     </div>
                 </div>
                 <div className="px-6 pb-6">
-                    {[].length > 0 ? (
+                    {renewals.length > 0 ? (
                         <div className="divide-y divide-gray-100">
-                            {[].map((subscription: any) => {
+                            {renewals.map((subscription: any) => {
                                 //   const daysLeft = getDaysUntil(subscription.nextBillingDate);
                                 return (
                                     <div
@@ -98,14 +103,14 @@ export const ExpiringSoon = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="py-8 text-center">
+                        <div className="py-8 text-center items-center justify-center">
                             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-4">
                                 <CalendarIcon size={24} />
                             </div>
-                            <Typography className="text-gray-600" weight="medium">
+                            <Typography className="text-gray-600 text-center" weight="medium">
                                 No upcoming renewals
                             </Typography>
-                            <Typography size="sm" className="text-gray-500 mt-1">
+                            <Typography size="sm" className="text-gray-500 mt-1 text-center">
                                 You're all set for the next 14 days
                             </Typography>
                             <button
@@ -120,7 +125,6 @@ export const ExpiringSoon = () => {
                     )}
                 </div>
             </div>
-            {/* Calendar Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="p-6 pb-3">
                     <Typography

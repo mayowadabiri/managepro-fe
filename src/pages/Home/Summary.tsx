@@ -1,7 +1,13 @@
 import Typography from "@/components/Typography"
 import { BellIcon, CreditCardIcon, DollarSignIcon } from "lucide-react"
 
-export const HomeSummary = () => {
+
+interface HomeSummaryProps {
+    monthlySpending: number;
+    yearlySpending: number;
+    renewalsCount: number;
+}
+export const HomeSummary = ({ monthlySpending, yearlySpending, renewalsCount }: HomeSummaryProps) => {
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 pb-0">
@@ -32,12 +38,11 @@ export const HomeSummary = () => {
                             weight="bold"
                             className="text-gray-900"
                         >
-                            {/* ${totalMonthly.toFixed(2)} */}
-                            $0
+                            ${monthlySpending.toFixed(2)}
                         </Typography>
                         <Typography size="sm" className="text-gray-500 mt-1">
                             {/* Across {subs.length} subscriptions */}
-                            Across 2 subscriptions
+                            {/* Across 2 subscriptions */}
                         </Typography>
                     </div>
                 </div>
@@ -55,8 +60,7 @@ export const HomeSummary = () => {
                             weight="bold"
                             className="text-gray-900"
                         >
-                            {/* ${totalYearly.toFixed(2)} */}
-                            $0
+                            ${yearlySpending.toFixed(2)}
                         </Typography>
                         <Typography size="sm" className="text-gray-500 mt-1">
                             Projected annual cost
@@ -77,8 +81,7 @@ export const HomeSummary = () => {
                             weight="bold"
                             className="text-gray-900"
                         >
-                            {/* {upcomingRenewals.length} */}
-                            2
+                            {renewalsCount}
                         </Typography>
                         <Typography size="sm" className="text-gray-500 mt-1">
                             In the next 14 days

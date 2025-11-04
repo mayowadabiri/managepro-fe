@@ -1,4 +1,4 @@
-import { CreateUser, User } from "@/types/user";
+import { CreateUser, User } from "@/types";
 import { get, post } from "@/utils/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 

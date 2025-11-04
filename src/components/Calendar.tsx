@@ -111,27 +111,27 @@ const Calendar: React.FC<CalendarProps> = ({
   };
   const calendarGrid = generateCalendarGrid();
   return <div className={`bg-white rounded-lg shadow-sm border border-gray-200 ${className}`}>
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">
-            {monthName} {year}
-          </h2>
-          <div className="flex space-x-1">
-            <button onClick={goToPreviousMonth} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors" aria-label="Previous month">
-              <ChevronLeftIcon size={16} />
-            </button>
-            <button onClick={goToNextMonth} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors" aria-label="Next month">
-              <ChevronRightIcon size={16} />
-            </button>
-          </div>
+    <div className="p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-gray-900">
+          {monthName} {year}
+        </h2>
+        <div className="flex space-x-1">
+          <button onClick={goToPreviousMonth} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors" aria-label="Previous month">
+            <ChevronLeftIcon size={16} />
+          </button>
+          <button onClick={goToNextMonth} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors" aria-label="Next month">
+            <ChevronRightIcon size={16} />
+          </button>
         </div>
-        <div className="grid grid-cols-7 gap-1">
-          {/* Day headers */}
-          {daysOfWeek.map(day => <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
-              {day}
-            </div>)}
-          {/* Calendar cells */}
-          {calendarGrid.map((cell, index) => {
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {/* Day headers */}
+        {daysOfWeek.map(day => <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
+          {day}
+        </div>)}
+        {/* Calendar cells */}
+        {calendarGrid.map((cell, index) => {
           const isDateHighlighted = isHighlighted(cell.date);
           const isDateSelected = isSelected(cell.date);
           const isDateToday = isToday(cell.date);
@@ -145,11 +145,12 @@ const Calendar: React.FC<CalendarProps> = ({
                   ${isDateDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                   transition-colors
                 `}>
-                {cell.dayNumber}
-              </button>;
+            {cell.dayNumber}
+          </button>;
         })}
-        </div>
       </div>
-    </div>;
+    </div>
+  </div>;
 };
 export default Calendar;
+
