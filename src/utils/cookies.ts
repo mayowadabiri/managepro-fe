@@ -1,8 +1,7 @@
 import Cookies from "js-cookie";
 
-const cookieName = import.meta.env.VITE_SUBTRACKPRO_COOKIE_NAME;
 export const setCookie = async (data: string) => {
-  await Cookies.set(cookieName, data, {
+  await Cookies.set("auth_token", data, {
     sameSite: "None",
     expires: 7,
     secure: true,
@@ -10,9 +9,9 @@ export const setCookie = async (data: string) => {
 };
 
 export const getCookie = () => {
-  return Cookies.get(cookieName);
+  return Cookies.get("auth_token");
 };
 
 export const removeCookie = () => {
-  Cookies.remove(cookieName);
+  Cookies.remove("auth_token");
 };

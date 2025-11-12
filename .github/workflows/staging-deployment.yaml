@@ -1,0 +1,36 @@
+name: Subtrackpro staging deployment
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CI: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Create .env file
+        run: |
+          echo "VITE_NODE_ENV=staging" >> .env
+          echo VITE_API_BASE_URL=${{ vars.STAGING_API_BASE_URL }} >> .env
+      - name: Build Subtrackpro Frontend - Development
+        run: yarn && yarn build
+      - name: Deploy subtrackpro build to S3 bucket
+        run: aws s3 sync build/ s3://subtrackpro-prod  --delete --exclude "*.map"
+      - name: invalidate Cloudfront configuration
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.SUBTRACKPRO_STAGING_DISTRIBUTION }}
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

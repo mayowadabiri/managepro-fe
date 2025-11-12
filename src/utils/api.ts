@@ -19,11 +19,9 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-const cookieName = import.meta.env.VITE_SUBTRACKPRO_COOKIE_NAME;
-console.log("Cookie Name:", cookieName);
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = Cookies.get(cookieName);
+    const token = Cookies.get("auth_token");
     if (token) {
       config.headers.Authorization = `Token ${token}`;
     }

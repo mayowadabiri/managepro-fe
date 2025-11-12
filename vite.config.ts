@@ -14,6 +14,7 @@ export default defineConfig({
     rollupOptions: {
       input: "index.html",
     },
+    outDir: "build",
   },
   plugins: [
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
