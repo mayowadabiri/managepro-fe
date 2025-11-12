@@ -91,7 +91,6 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   });
 
   const watchedValues = useWatch({ control })
-  // console.log("watchedValues", watchedValues);
 
   // local UI state
   const [logoPreview, setLogoPreview] = useState<string | null>(subscription?.service?.imageUrl ?? null);
@@ -230,7 +229,6 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       payload.free_trial_billing_cycle = data.trial_billing_cycle;
     }
 
-    console.log("payload", payload);
     await mutateAsync(payload)
   };
 

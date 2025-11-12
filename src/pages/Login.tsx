@@ -27,7 +27,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data?.data.token);
       setCookie(data?.data.token);
       navigate({ to: "/" });
     }
