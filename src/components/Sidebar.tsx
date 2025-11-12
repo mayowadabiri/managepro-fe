@@ -18,10 +18,10 @@ const Sidebar: React.FC = () => {
                     <ListIcon className="mr-3" size={20} />
                     Subscriptions
                 </Link>
-                <Link to="/insights" className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive('/insights')}`}>
+                {/* <Link to="/insights" className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive('/insights')}`}>
                     <BarChart3Icon className="mr-3" size={20} />
                     Insights
-                </Link>
+                </Link> */}
             </nav>
         </aside>
     );

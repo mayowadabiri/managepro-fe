@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { HomeSummary } from "./Summary";
 import { useHomeSummary } from "@/api/home";
@@ -10,6 +10,7 @@ import SubscriptionForm from "@/components/SubscriptionForm";
 
 const Home = () => {
   const { data, } = useHomeSummary();
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const summary = useMemo(() => {
     return {
@@ -23,14 +24,13 @@ const Home = () => {
   return (
     <div className="space-y-8">
       <HomeSummary {...summary} />
-      <ExpiringSoon renewals={summary.renewals} />
+      <ExpiringSoon onOpenModal={() => setShowAddForm(true)} renewals={summary.renewals} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <CategoryBreakdown />
         <QuickInsight />
       </div>
       <RecentActivities />
-      {/* {showAddForm && } */}
-      <SubscriptionForm />
+      {showAddForm && <SubscriptionForm open={showAddForm} onCloseModal={() => setShowAddForm(false)} />}
     </div>
   );
 };

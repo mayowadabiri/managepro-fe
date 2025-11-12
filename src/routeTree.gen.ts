@@ -17,10 +17,9 @@ import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-passw
 import { Route as AuthOtpVerificationRouteImport } from './routes/auth/otp-verification'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
-import { Route as LayoutSubscriptionsRouteImport } from './routes/_layout/subscriptions'
-import { Route as LayoutSubscription_idRouteImport } from './routes/_layout/subscription_$id'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
-import { Route as LayoutInsightsRouteImport } from './routes/_layout/insights'
+import { Route as LayoutSubscriptionsIndexRouteImport } from './routes/_layout/subscriptions/index'
+import { Route as LayoutSubscriptionsSubscriptionIdRouteImport } from './routes/_layout/subscriptions/$subscriptionId'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
@@ -61,109 +60,100 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const LayoutSubscriptionsRoute = LayoutSubscriptionsRouteImport.update({
-  id: '/subscriptions',
-  path: '/subscriptions',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutSubscription_idRoute = LayoutSubscription_idRouteImport.update({
-  id: '/subscription_$id',
-  path: '/subscription_$id',
-  getParentRoute: () => LayoutRoute,
-} as any)
 const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutInsightsRoute = LayoutInsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutSubscriptionsIndexRoute =
+  LayoutSubscriptionsIndexRouteImport.update({
+    id: '/subscriptions/',
+    path: '/subscriptions/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutSubscriptionsSubscriptionIdRoute =
+  LayoutSubscriptionsSubscriptionIdRouteImport.update({
+    id: '/subscriptions/$subscriptionId',
+    path: '/subscriptions/$subscriptionId',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
-  '/insights': typeof LayoutInsightsRoute
   '/settings': typeof LayoutSettingsRoute
-  '/subscription_$id': typeof LayoutSubscription_idRoute
-  '/subscriptions': typeof LayoutSubscriptionsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof LayoutIndexRoute
+  '/subscriptions/$subscriptionId': typeof LayoutSubscriptionsSubscriptionIdRoute
+  '/subscriptions': typeof LayoutSubscriptionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
-  '/insights': typeof LayoutInsightsRoute
   '/settings': typeof LayoutSettingsRoute
-  '/subscription_$id': typeof LayoutSubscription_idRoute
-  '/subscriptions': typeof LayoutSubscriptionsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof LayoutIndexRoute
+  '/subscriptions/$subscriptionId': typeof LayoutSubscriptionsSubscriptionIdRoute
+  '/subscriptions': typeof LayoutSubscriptionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/auth': typeof AuthRouteRouteWithChildren
   '/_layout': typeof LayoutRouteWithChildren
-  '/_layout/insights': typeof LayoutInsightsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
-  '/_layout/subscription_$id': typeof LayoutSubscription_idRoute
-  '/_layout/subscriptions': typeof LayoutSubscriptionsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/subscriptions/$subscriptionId': typeof LayoutSubscriptionsSubscriptionIdRoute
+  '/_layout/subscriptions/': typeof LayoutSubscriptionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/auth'
-    | '/insights'
     | '/settings'
-    | '/subscription_$id'
-    | '/subscriptions'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
     | '/auth/signup'
     | '/'
+    | '/subscriptions/$subscriptionId'
+    | '/subscriptions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
-    | '/insights'
     | '/settings'
-    | '/subscription_$id'
-    | '/subscriptions'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
     | '/auth/signup'
     | '/'
+    | '/subscriptions/$subscriptionId'
+    | '/subscriptions'
   id:
     | '__root__'
     | '/auth'
     | '/_layout'
-    | '/_layout/insights'
     | '/_layout/settings'
-    | '/_layout/subscription_$id'
-    | '/_layout/subscriptions'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
     | '/auth/signup'
     | '/_layout/'
+    | '/_layout/subscriptions/$subscriptionId'
+    | '/_layout/subscriptions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -229,20 +219,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/_layout/subscriptions': {
-      id: '/_layout/subscriptions'
-      path: '/subscriptions'
-      fullPath: '/subscriptions'
-      preLoaderRoute: typeof LayoutSubscriptionsRouteImport
-      parentRoute: typeof LayoutRoute
-    }
-    '/_layout/subscription_$id': {
-      id: '/_layout/subscription_$id'
-      path: '/subscription_$id'
-      fullPath: '/subscription_$id'
-      preLoaderRoute: typeof LayoutSubscription_idRouteImport
-      parentRoute: typeof LayoutRoute
-    }
     '/_layout/settings': {
       id: '/_layout/settings'
       path: '/settings'
@@ -250,11 +226,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutSettingsRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/insights': {
-      id: '/_layout/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof LayoutInsightsRouteImport
+    '/_layout/subscriptions/': {
+      id: '/_layout/subscriptions/'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof LayoutSubscriptionsIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/subscriptions/$subscriptionId': {
+      id: '/_layout/subscriptions/$subscriptionId'
+      path: '/subscriptions/$subscriptionId'
+      fullPath: '/subscriptions/$subscriptionId'
+      preLoaderRoute: typeof LayoutSubscriptionsSubscriptionIdRouteImport
       parentRoute: typeof LayoutRoute
     }
   }
@@ -281,19 +264,18 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface LayoutRouteChildren {
-  LayoutInsightsRoute: typeof LayoutInsightsRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
-  LayoutSubscription_idRoute: typeof LayoutSubscription_idRoute
-  LayoutSubscriptionsRoute: typeof LayoutSubscriptionsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutSubscriptionsSubscriptionIdRoute: typeof LayoutSubscriptionsSubscriptionIdRoute
+  LayoutSubscriptionsIndexRoute: typeof LayoutSubscriptionsIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutInsightsRoute: LayoutInsightsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
-  LayoutSubscription_idRoute: LayoutSubscription_idRoute,
-  LayoutSubscriptionsRoute: LayoutSubscriptionsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutSubscriptionsSubscriptionIdRoute:
+    LayoutSubscriptionsSubscriptionIdRoute,
+  LayoutSubscriptionsIndexRoute: LayoutSubscriptionsIndexRoute,
 }
 
 const LayoutRouteWithChildren =

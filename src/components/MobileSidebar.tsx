@@ -35,10 +35,10 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ show, onClose, handleLogo
                         <ListIcon className="mr-3" size={20} />
                         Subscriptions
                     </Link>
-                    <Link to="/insights" className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive('/insights')}`} onClick={onClose}>
+                    {/* <Link to="/insights" className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive('/insights')}`} onClick={onClose}>
                         <BarChart3Icon className="mr-3" size={20} />
                         Insights
-                    </Link>
+                    </Link> */}
                     <div className="border-t border-gray-200 my-3"></div>
                     <Link to="/settings" className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive('/settings')}`} onClick={onClose}>
                         <SettingsIcon className="mr-3" size={20} />

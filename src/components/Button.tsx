@@ -2,6 +2,7 @@ import { Slot, Slottable } from "@radix-ui/react-slot";
 import { ButtonHTMLAttributes, useMemo } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 import Loader from "./Loader";
+import IconLoader from "./IconLoader";
 
 
 const baseStyles = [
@@ -150,7 +151,7 @@ export default function Button({
             {...props}
         >
             {loading ? (
-                <Loader width={1} />
+                <IconLoader />
             ) : (
                 standaloneIcon || leadingIcon
             )}

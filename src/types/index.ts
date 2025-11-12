@@ -1,5 +1,7 @@
 // src/types/user.ts
 
+import { label } from "happy-dom/lib/PropertySymbol.js";
+
 interface CreateUser {
   first_name: string;
   last_name: string;
@@ -18,16 +20,6 @@ type User = {
   profilePicture?: string;
 };
 
-interface Services {
-  id: number;
-  name: string;
-  domain: string;
-  createdAt: string;
-  uuid: string;
-  isPredefined: boolean;
-  imageUrl: string;
-}
-
 interface Category {
   id: number;
   name: string;
@@ -38,9 +30,18 @@ type BillingCycle = "weekly" | "monthly" | "quarterly" | "yearly";
 enum Status {
   ACTIVE = "active",
   INACTIVE = "to_expire",
-  CANCELLED = "expired",
+  EXPIRED = "expired",
 }
 
+interface Services {
+  id: number;
+  name: string;
+  domain: string;
+  createdAt: string;
+  uuid: string;
+  isPredefined: boolean;
+  imageUrl: string;
+}
 interface Subscription {
   amount: number;
   currency: string;
@@ -58,6 +59,7 @@ interface Subscription {
   trialEndDay: number;
   uuid: string;
   service: Services;
+  daysLeft: number;
 }
 interface Category {
   id: number;
@@ -80,6 +82,35 @@ type FormValues = {
   category_id: number;
 };
 
+const getReadableStatus = (status: Status) => {
+  switch (status) {
+    case Status.ACTIVE:
+      return {
+        label: "Active",
+        bgColor: "bg-green-100",
+        textColor: "text-green-700",
+      };
+    case Status.INACTIVE:
+      return {
+        label: "About to expire",
+        bgColor: "bg-amber-100",
+        textColor: "text-amber-700",
+      };
+    case Status.EXPIRED:
+      return {
+        label: "Expired",
+        bgColor: "bg-red-100",
+        textColor: "text-red-600",
+      };
+    default:
+      return {
+        label: "Unknown",
+        bgColor: "bg-gray-100",
+        textColor: "text-gray-600",
+      };
+  }
+};
+
 export {
   type CreateUser,
   type User,
@@ -89,4 +120,5 @@ export {
   type FormValues,
   Status,
   type BillingCycle,
+  getReadableStatus,
 };

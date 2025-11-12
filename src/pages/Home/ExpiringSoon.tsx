@@ -1,15 +1,15 @@
 import Calendar from "@/components/Calendar";
 import Typography from "@/components/Typography";
 import { Link } from "@tanstack/react-router";
-import { formatDate } from "date-fns";
 import { ArrowUpRightIcon, CalendarIcon, PlusIcon } from "lucide-react";
 
 
 interface ExpiringSoonProps {
     renewals: any[];
+    onOpenModal: () => void;
 }
 
-export const ExpiringSoon = ({ renewals }: ExpiringSoonProps) => {
+export const ExpiringSoon = ({ renewals, onOpenModal }: ExpiringSoonProps) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
@@ -29,9 +29,10 @@ export const ExpiringSoon = ({ renewals }: ExpiringSoonProps) => {
                     </div>
                     <div className="flex items-center space-x-3">
                         <button
+                            onClick={onOpenModal}
                             type="button"
                             // onClick={() => setShowAddForm(true)}
-                            className="flex items-center px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 text-sm font-medium transition-colors"
+                            className="flex cursor-pointer items-center px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 text-sm font-medium transition-colors"
                         >
                             <PlusIcon size={16} className="mr-2" />
                             Add Subscription
@@ -85,6 +86,7 @@ export const ExpiringSoon = ({ renewals }: ExpiringSoonProps) => {
                                             </div>
                                             <div className="flex items-center mt-1">
                                                 <div
+                                                    // eslint-disable-next-line no-constant-condition
                                                     className={`h-2 w-2 rounded-full mr-2 ${3 <= 3 ? "bg-red-500" : 3 <= 7 ? "bg-amber-500" : "bg-emerald-500"}`}
                                                 ></div>
                                                 {/* <span className="text-sm text-gray-500">
@@ -115,8 +117,8 @@ export const ExpiringSoon = ({ renewals }: ExpiringSoonProps) => {
                             </Typography>
                             <button
                                 type="button"
-                                //   onClick={() => setShowAddForm(true)}
-                                className="mt-4 flex items-center px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 text-sm font-medium transition-colors mx-auto"
+                                onClick={onOpenModal}
+                                className="mt-4 flex cursor-pointer items-center px-4 py-2 bg-lime-600 text-white rounded-lg hover:bg-lime-700 text-sm font-medium transition-colors mx-auto"
                             >
                                 <PlusIcon size={16} className="mr-2" />
                                 Add Subscription

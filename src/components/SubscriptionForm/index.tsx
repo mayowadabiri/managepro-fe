@@ -17,6 +17,7 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import ServiceDropdown from "./Dropdown";
 import { categories as mockCategories } from "../../utils/mockData";
 import { addDays, format } from "date-fns";
+import Button from "../Button";
 
 
 const addPeriod = (start: Date, cycle: BillingCycle, multiplier = 1) => {
@@ -37,22 +38,24 @@ const addPeriod = (start: Date, cycle: BillingCycle, multiplier = 1) => {
 };
 
 interface SubscriptionFormProps {
-  subscription?: Subscription;
-  onSubmit: (
-    subscription: Omit<Subscription, "id"> & {
-      id?: string;
-    }
-  ) => void;
-  onCancel: () => void;
+  // subscription?: Subscription;
+  // onSubmit: (
+  //   subscription: Omit<Subscription, "id"> & {
+  //     id?: string;
+  //   }
+  // ) => void;
+  // onCancel: () => void;
+  // open: boolean;
+  // onOpenChange: (open: boolean) => void;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  subscription?: Subscription;
+  onCloseModal: () => void;
 }
 
 const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   subscription,
-  onCancel,
   open,
-  onOpenChange,
+  onCloseModal,
 }) => {
   const { data: services } = useGetServices();
   const { mutateAsync, isPending } = useCreateSubscription();
@@ -66,6 +69,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     getValues,
     setError,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -231,12 +235,19 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   };
 
 
+  const handleReset = () => {
+    reset();
+    setLogoPreview(null);
+    setCustomService(false);
+    onCloseModal()
+  }
+
 
   const fmt = (d?: Date | null) =>
     d ? new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) : "";
 
   return (
-    <Dialog.Root open={true} onOpenChange={onOpenChange}>
+    <Dialog.Root open={open} onOpenChange={handleReset}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" />
         <Dialog.Content
@@ -249,11 +260,8 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
                 {subscription ? "Edit Subscription" : "Add New Subscription"}
               </h3>
               <button
-                onClick={() => {
-                  onCancel();
-                  onOpenChange(false);
-                }}
-                className="text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full p-2 transition-colors"
+                onClick={handleReset}
+                className="text-gray-400 cursor-pointer hover:text-gray-500 hover:bg-gray-100 rounded-full p-2 transition-colors"
                 aria-label="Close"
               >
                 <XIcon size={20} />
@@ -684,23 +692,17 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
               </div>
 
               {/* Footer actions */}
-              <div className="pt-4 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 border-t border-gray-100">
+              <div className="pt-4 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 border-t border-gray-100 space-x-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    onCancel();
-                    onOpenChange(false);
-                  }}
-                  className="px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 order-2 sm:order-1"
+                  onClick={handleReset}
+                  className="px-4 py-2.5 cursor-pointer ml-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 order-2 sm:order-1"
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="px-4 cursor-pointer py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 order-1 sm:order-2"
-                >
-                  {subscription ? "Update" : "Add"} Subscription
-                </button>
+                <Button type="submit" className="py-3 px-4" disabled={isPending} loading={isPending}>
+                  {isPending ? "Signing in..." : "Sign in"}
+                </Button>
               </div>
             </form>
           </div>
