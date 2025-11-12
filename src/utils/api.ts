@@ -16,6 +16,8 @@ url.searchParams.delete("tk_access");
 
 window.history.replaceState(null, "", url);
 
+console.log("API Base URL:", baseURL);
+
 const axiosInstance = axios.create({
   baseURL,
   headers,
