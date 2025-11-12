@@ -1,10 +1,11 @@
+import config from "@/config";
 import { ApiError, ApiResponse } from "@/types/apiResponse";
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+// const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-console.log(baseURL);
+const baseURL = config.baseUrl;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const headers: any = {};
