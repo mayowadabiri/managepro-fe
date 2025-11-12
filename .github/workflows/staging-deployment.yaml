@@ -22,7 +22,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "VITE_NODE_ENV=staging" >> .env
-          echo VITE_API_BASE_URL=${{ vars.STAGING_API_BASE_URL }} >> .env
+          echo VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }} >> .env
       - name: Build Subtrackpro Frontend - Development
         run: yarn && yarn build
       - name: Deploy subtrackpro build to S3 bucket
