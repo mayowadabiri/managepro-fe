@@ -8,13 +8,15 @@ import Typography from "../components/Typography";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../schema/loginSchema";
-import { useLogin } from "@/api/auth";
+import { useLogin, useLoginWithGoogle } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
 import { useEffect } from "react";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate()
+  const { mutateAsync: mutateGoogle, isPending: isGoogleLoginPending } = useLoginWithGoogle()
+
   const { mutate, isPending, data, isSuccess } = useLogin();
   const {
     control,
@@ -37,14 +39,21 @@ const Login = () => {
     mutate(payload);
   };
 
-  const login = useGoogleOneTapLogin({
-    onSuccess: response => {
-      console.log(response);
+  useGoogleOneTapLogin({
+    onSuccess: async (response) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const credential = response.credential!;
+      const data = await mutateGoogle({ credential })
+      setCookie(data?.data.token);
+      navigate({ to: "/" });
     },
     onError: () => {
       console.log('Login Failed');
     },
+    cancel_on_tap_outside: false,
   })
+
+  const isLoading = isPending || isGoogleLoginPending;
 
   return (
     <div className="w-full space-y-6">
@@ -127,8 +136,8 @@ const Login = () => {
             </Link>
           </div>
         </div>
-        <Button type="submit" width="full" className="py-3 px-4" disabled={isPending} loading={isPending}>
-          {isPending ? "Signing in..." : "Sign in"}
+        <Button type="submit" width="full" className="py-3 px-4" disabled={isLoading} loading={isLoading}>
+          {isLoading ? "Signing in..." : "Sign in"}
         </Button>
       </Input.Root>
     </div>

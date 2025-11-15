@@ -14,6 +14,7 @@ import {
   EyeOffIcon,
 } from "lucide-react";
 import { useLoginWithGoogle, useSignup } from "@/api/auth";
+import { setCookie } from "@/utils/cookies";
 
 
 const SignUp = () => {
@@ -30,7 +31,7 @@ const SignUp = () => {
     resolver: yupResolver(signUpSchema),
     mode: "onSubmit",
   });
-  const { mutate } = useLoginWithGoogle()
+  const { mutateAsync: mutateGoogle, isPending: isGoogleLoginPending } = useLoginWithGoogle()
 
 
   const onSubmit = async () => {
@@ -42,17 +43,21 @@ const SignUp = () => {
     })
   };
 
-  const login = useGoogleOneTapLogin({
-    onSuccess: response => {
+  useGoogleOneTapLogin({
+    onSuccess: async (response) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const credential = response.credential!;
-      console.log("Credential received:", credential);
-      mutate({ credential })
+      const data = await mutateGoogle({ credential })
+      setCookie(data?.data.token);
+      navigate({ to: "/" });
     },
     onError: () => {
       console.log('Login Failed');
     },
     cancel_on_tap_outside: false,
   })
+
+  const isLoading = isPending || isGoogleLoginPending;
 
   return (
     <div className="w-full space-y-6">
@@ -210,24 +215,12 @@ const SignUp = () => {
           type="submit"
           width="full"
           className="py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all disabled:opacity-70"
-          loading={isPending}
+          loading={isLoading}
         >
           Create Account
         </Button>
       </RadixInput.Root>
-      <div className="relative flex items-center my-6">
-        <div className="flex-grow border-t border-gray-300"></div>
-        <span className="mx-4 text-gray-500 text-sm">Or continue with</span>
-        <div className="flex-grow border-t border-gray-300"></div>
-      </div>
 
-      {/* Social buttons */}
-      <button
-        type="button"
-        className="flex w-full cursor-pointer items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50 transition">
-        <FcGoogle size={20} />
-        <span className="text-sm font-medium text-gray-700">Google</span>
-      </button>
     </div>
   );
 };
