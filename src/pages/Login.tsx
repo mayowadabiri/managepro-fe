@@ -11,6 +11,7 @@ import { loginSchema } from "../schema/loginSchema";
 import { useLogin } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
 import { useEffect } from "react";
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -35,6 +36,15 @@ const Login = () => {
     const payload = getValues();
     mutate(payload);
   };
+
+  const login = useGoogleOneTapLogin({
+    onSuccess: response => {
+      console.log(response);
+    },
+    onError: () => {
+      console.log('Login Failed');
+    },
+  })
 
   return (
     <div className="w-full space-y-6">
