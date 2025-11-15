@@ -6,12 +6,15 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../schema/signUpSchema";
+import { FcGoogle } from "react-icons/fc";
+import { useGoogleOneTapLogin } from '@react-oauth/google';
 
 import {
   EyeIcon,
   EyeOffIcon,
 } from "lucide-react";
-import { useSignup } from "@/api/auth";
+import { useLoginWithGoogle, useSignup } from "@/api/auth";
+import { setCookie } from "@/utils/cookies";
 
 
 const SignUp = () => {
@@ -28,6 +31,7 @@ const SignUp = () => {
     resolver: yupResolver(signUpSchema),
     mode: "onSubmit",
   });
+  const { mutateAsync: mutateGoogle, isPending: isGoogleLoginPending } = useLoginWithGoogle()
 
 
   const onSubmit = async () => {
@@ -38,6 +42,22 @@ const SignUp = () => {
       state: { email: data.email }
     })
   };
+
+  useGoogleOneTapLogin({
+    onSuccess: async (response) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const credential = response.credential!;
+      const data = await mutateGoogle({ credential })
+      setCookie(data?.data.token);
+      navigate({ to: "/" });
+    },
+    onError: () => {
+      console.log('Login Failed');
+    },
+    cancel_on_tap_outside: false,
+  })
+
+  const isLoading = isPending || isGoogleLoginPending;
 
   return (
     <div className="w-full space-y-6">
@@ -195,36 +215,12 @@ const SignUp = () => {
           type="submit"
           width="full"
           className="py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all disabled:opacity-70"
-          loading={isPending}
+          loading={isLoading}
         >
           Create Account
         </Button>
       </RadixInput.Root>
-      <div className="relative flex items-center my-6">
-        <div className="flex-grow border-t border-gray-300"></div>
-        <span className="mx-4 text-gray-500 text-sm">Or continue with</span>
-        <div className="flex-grow border-t border-gray-300"></div>
-      </div>
 
-      {/* Social buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50 transition">
-          <img src="/google-icon.svg" alt="Google" className="h-5 w-5" />
-          <span className="text-sm font-medium text-gray-700">Google</span>
-        </button>
-
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-50 transition"
-        >
-          <svg className="h-5 w-5 text-sky-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0022.43.36a9 9 0 01-2.86 1.1A4.52 4.52 0 0016.1 0c-2.63 0-4.77 2.13-4.77 4.77 0 .37.04.73.12 1.07A12.82 12.82 0 013 1.64a4.77 4.77 0 001.48 6.36A4.5 4.5 0 012 7.3v.06c0 2.23 1.59 4.1 3.7 4.52a4.49 4.49 0 01-2.15.08c.6 1.88 2.35 3.24 4.42 3.28A9.05 9.05 0 012 19.54a12.77 12.77 0 006.92 2.02c8.3 0 12.84-6.87 12.84-12.82 0-.2 0-.39-.01-.58A9.22 9.22 0 0023 3z" />
-          </svg>
-          <span className="text-sm font-medium text-gray-700">Twitter</span>
-        </button>
-      </div>
     </div>
   );
 };

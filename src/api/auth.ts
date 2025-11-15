@@ -48,3 +48,15 @@ export const useGetAccount = () => {
     retry: false,
   });
 };
+
+const loginWithGoogle = async (data: { credential: string }) => {
+  const response = await post<{ token: string }>("/auth/google-login", data);
+  return response;
+};
+
+export const useLoginWithGoogle = () => {
+  return useMutation({
+    mutationFn: loginWithGoogle,
+    mutationKey: ["google-login"],
+  });
+};
