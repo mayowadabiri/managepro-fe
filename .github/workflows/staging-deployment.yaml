@@ -20,7 +20,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Build Subtrackpro Frontend - Development
-        run: yarn && VITE_NODE_ENV=staging yarn build
+        env:
+          VITE_NODE_ENV: staging
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        run: yarn && yarn build
       - name: Deploy subtrackpro build to S3 bucket
         run: aws s3 sync build/ s3://subtrackpro-prod  --delete --exclude "*.map"
       - name: invalidate Cloudfront configuration
