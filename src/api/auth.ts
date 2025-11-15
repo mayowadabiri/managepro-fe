@@ -50,7 +50,6 @@ export const useGetAccount = () => {
 };
 
 const loginWithGoogle = async (data: { credential: string }) => {
-  console.log("Credential received:", data.credential);
   const response = await post<{ token: string }>("/auth/google-login", data);
   return response;
 };
