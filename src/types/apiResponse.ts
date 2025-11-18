@@ -17,5 +17,5 @@ export interface ApiError {
   statusCode?: number;
   message: string;
   errors?: Record<string, unknown>;
-  stack?: string;
+  code?: string;
 }

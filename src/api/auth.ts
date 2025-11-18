@@ -60,3 +60,18 @@ export const useLoginWithGoogle = () => {
     mutationKey: ["google-login"],
   });
 };
+
+const linkAccountWithGoogle = async (data: {
+  password: string;
+  credential: string;
+}) => {
+  const response = await post<{ token: string }>("/auth/link-google", data);
+  return response;
+};
+
+export const useLinkAccountWithGoogle = () => {
+  return useMutation({
+    mutationFn: linkAccountWithGoogle,
+    mutationKey: ["link-google-account"],
+  });
+};
