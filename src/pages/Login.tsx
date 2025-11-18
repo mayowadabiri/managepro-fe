@@ -12,16 +12,18 @@ import { useLogin, useLoginWithGoogle } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
 import { useEffect } from "react";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
+import { ApiError } from "@/types/apiResponse";
 
 const Login = () => {
   const navigate = useNavigate()
-  const { mutateAsync: mutateGoogle, isPending: isGoogleLoginPending } = useLoginWithGoogle()
+  const { mutateAsync: mutateGoogle, isPending: isGoogleLoginPending, isError, error } = useLoginWithGoogle()
 
-  const { mutate, isPending, data, isSuccess } = useLogin();
+  const { mutate, isPending, data, isSuccess, isError: isLoginError, error: loginError } = useLogin();
   const {
     control,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
@@ -29,11 +31,28 @@ const Login = () => {
   });
 
   useEffect(() => {
+    if (isLoginError) {
+      setError("root", { message: (loginError as ApiError).message })
+    }
+  }, [isLoginError])
+
+
+  const handleOnError = (error: ApiError, { credential }: { credential: string }) => {
+    const err = error as ApiError;
+    if (err.code === "ACCOUNT_EXISTS_NEEDS_LINKING") {
+      navigate({
+        to: "/auth/link-with-google",
+        state: { credential: credential }
+      })
+    }
+  }
+  useEffect(() => {
     if (isSuccess) {
       setCookie(data?.data.token);
       navigate({ to: "/" });
     }
   }, [isSuccess]);
+
   const onSubmit = async () => {
     const payload = getValues();
     mutate(payload);
@@ -43,7 +62,9 @@ const Login = () => {
     onSuccess: async (response) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const credential = response.credential!;
-      const data = await mutateGoogle({ credential })
+      const data = await mutateGoogle({ credential }, {
+        onError: handleOnError
+      })
       setCookie(data?.data.token);
       navigate({ to: "/" });
     },
@@ -87,6 +108,9 @@ const Login = () => {
           </Link>
         </Typography>
       </div>
+      {errors.root && (
+        <span className="text-sm text-red-600 text-center block">{errors.root.message}</span>
+      )}
       <Input.Root className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"

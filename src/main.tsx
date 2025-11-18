@@ -22,6 +22,7 @@ declare module "@tanstack/react-router" {
 
     interface HistoryState {
         email?: string;
+        credential?: string;
     }
 }
 

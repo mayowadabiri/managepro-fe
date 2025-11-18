@@ -16,6 +16,7 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthOtpVerificationRouteImport } from './routes/auth/otp-verification'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthLinkWithGoogleRouteImport } from './routes/auth/link-with-google'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutSubscriptionsIndexRouteImport } from './routes/_layout/subscriptions/index'
@@ -55,6 +56,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthLinkWithGoogleRoute = AuthLinkWithGoogleRouteImport.update({
+  id: '/link-with-google',
+  path: '/link-with-google',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/settings': typeof LayoutSettingsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/link-with-google': typeof AuthLinkWithGoogleRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
   '/settings': typeof LayoutSettingsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/link-with-google': typeof AuthLinkWithGoogleRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/settings': typeof LayoutSettingsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/link-with-google': typeof AuthLinkWithGoogleRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/otp-verification': typeof AuthOtpVerificationRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/settings'
     | '/auth/forgot-password'
+    | '/auth/link-with-google'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/settings'
     | '/auth/forgot-password'
+    | '/auth/link-with-google'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/_layout/settings'
     | '/auth/forgot-password'
+    | '/auth/link-with-google'
     | '/auth/login'
     | '/auth/otp-verification'
     | '/auth/reset-password'
@@ -212,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/auth/link-with-google': {
+      id: '/auth/link-with-google'
+      path: '/link-with-google'
+      fullPath: '/auth/link-with-google'
+      preLoaderRoute: typeof AuthLinkWithGoogleRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/auth/forgot-password': {
       id: '/auth/forgot-password'
       path: '/forgot-password'
@@ -245,6 +264,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLinkWithGoogleRoute: typeof AuthLinkWithGoogleRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthOtpVerificationRoute: typeof AuthOtpVerificationRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
@@ -253,6 +273,7 @@ interface AuthRouteRouteChildren {
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLinkWithGoogleRoute: AuthLinkWithGoogleRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthOtpVerificationRoute: AuthOtpVerificationRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,

@@ -43,26 +43,23 @@ axiosInstance.interceptors.response.use(
 
 export function handleAxiosError(error: unknown): ApiError {
   if (axios.isAxiosError(error)) {
-    const statusCode = error.response?.status;
-    const backendMessage = error.response?.data.errors?.message as
-      | string
-      | undefined;
-    const message =
-      backendMessage || error.message || "An unknown error occurred";
-
-    const errors = error.response?.data?.errors;
+    const response = error?.response?.data;
+    const statusCode = error.response?.status || 500;
+    const message = response.message || "An unknown error occurred";
+    const errors = response?.errors || null;
+    const code = response?.code || undefined;
 
     return {
       statusCode,
       message,
       errors,
+      code,
     };
   }
 
   const e = error as Error;
   return {
     message: e.message,
-    stack: e.stack,
   };
 }
 
